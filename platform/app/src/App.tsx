@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import i18n from '@ohif/i18n';
 import { I18nextProvider } from 'react-i18next';
-import { BrowserRouter, type BrowserRouterProps } from 'react-router-dom';
+import { BrowserRouter, type BrowserRouterProps, useNavigate, useLocation } from 'react-router-dom';
 
 import Compose from './routes/Mode/Compose';
 import {
@@ -167,12 +167,45 @@ function App({
     );
   }
 
+
+function GoToLocalButton() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  if (location.pathname !== '/') {
+    return null;
+  }
+
+  return (
+    <button
+      onClick={() => navigate('/local')}
+      style={{
+        position: 'fixed',
+        top: 5,
+        right: 100,
+        zIndex: 5000,
+        padding: '8px 12px',
+        background: '#1976d2',
+        color: 'white',
+        border: 'none',
+        borderRadius: 4,
+        cursor: 'pointer',
+      }}
+    >
+      Open Local Files
+    </button>
+  );
+}
+
+
   return (
     <CombinedProviders>
       <BrowserRouter
         basename={routerBasename}
         future={routerFutureFlags}
       >
+        {/* Simple button to go to /local */}
+        <GoToLocalButton />
         {authRoutes}
         {appRoutes}
       </BrowserRouter>
